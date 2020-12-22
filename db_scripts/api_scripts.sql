@@ -5,7 +5,7 @@ INSERT INTO USERS VALUES (1, 'YUVAL', '0507484858');
 INSERT INTO LISTS VALUES (1, 1, 1, '11/11/1111', "shekem");
 
 -- add team example (team_id, team_name);
-INSERT INTO TEAMS VALUES (1, "kaki");
+INSERT INTO TEAMS VALUES (1, "yuval-kaki");
 
 -- add team_per_user example (user_id, team_id)
 INSERT INTO TEAM_PER_USER VALUES (1, 1);
