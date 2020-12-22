@@ -1,7 +1,6 @@
 const { Pool } = require('pg');
-const { response } = require('express');
 
-const client = new Pool({
+const pool = new Pool({
     user: 'sryvfdltkzxaze',
     host: 'ec2-3-248-4-172.eu-west-1.compute.amazonaws.com',
     database: 'devquojnobf62t',
@@ -12,14 +11,22 @@ const client = new Pool({
 
 
 exports.user_phone_number = (req, response, next) => {
-    client.connect()
-    client.query("SELECT userfullname FROM public.USERS WHERE UserPhoneNumber='" + req.params.phonenumber + "'", (err, res) => {
-        var username = res.rows[0].userfullname
-        client.end()
-        response.send(username)
+    pool.query("SELECT userfullname,UserID FROM public.USERS WHERE UserPhoneNumber='" + req.params.phonenumber + "'", (err, res) => {
+
+        try {
+            var item = {
+                username: res.rows[0].userfullname,
+                id: res.rows[0].userid
+            }
+            response.send(item)
+
+        } catch (e) {
+            response.send("user does not exist")
+        }
+
     })
 };
 
-exports.user_create = (req, res, next) => {
-    console.log(req.body.name)
+exports.user_create = (req, response, next) => {
+
 }
