@@ -1,3 +1,4 @@
+// todo - יש שכפול קוד בין כל הראורטים (תנסה למצוא דרך שבה רושמים את כל המשתנים במקום אחד וקוראים להם מהמקום הזה)
 const express = require("express");
 const router = express.Router();
 

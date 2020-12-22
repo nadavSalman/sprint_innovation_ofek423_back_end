@@ -1,9 +1,39 @@
+const { Pool } = require('pg');
 
-exports.user_phone_number = (req, res, next) => {
-    console.log(req.params.phonenumber)
+const pool = new Pool({
+    user: 'sryvfdltkzxaze',
+    host: 'ec2-3-248-4-172.eu-west-1.compute.amazonaws.com',
+    database: 'devquojnobf62t',
+    password: '4de869ff47497e1677ecb430e4c1474559bf5b1b2abe9161c33492ad7dd16b66',
+    port: 5432,
+    ssl: { rejectUnauthorized: false }
+})
 
+
+exports.user_phone_number = (req, response, next) => {
+    pool.query("SELECT userfullname,UserID FROM public.USERS WHERE UserPhoneNumber='" + req.params.phonenumber + "'", (err, res) => {
+
+        try {
+            var item = {
+                username: res.rows[0].userfullname,
+                id: res.rows[0].userid
+            }
+            response.send(item)
+
+        } catch (e) {
+            response.send("user does not exist")
+        }
+
+    })
 };
 
-exports.user_create = (req, res, next) => {
-    console.log(req.body.name)
-};
+exports.user_create = (req, response, next) => {
+    const { name, phone } = req.body
+  
+    pool.query("INSERT INTO USERS (UserFullName, UserPhoneNumber) VALUES  ($1, $2)", [name, phone], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.send(`User added`)
+    })
+}

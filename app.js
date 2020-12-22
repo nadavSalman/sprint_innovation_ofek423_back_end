@@ -1,7 +1,9 @@
+// todo - הכנס הערה שמתארת את קבוצת הפרטמרים הללו
 const express = require("express")
 const app = express()
 const bodyParser = require("body-parser");
 
+// todo - הכנס הערה שמתארת את קבוצת הפרטמרים הללו
 const port = 3000
 const userRoutes = require('./routers/users-router');
 const groupRoutes = require('./routers/groups-router');
@@ -17,7 +19,9 @@ app.use("/groups", groupRoutes);
 app.use("/lists", listRoutes);
 app.use("/items", itemRoutes);
 
+// todo - לא השתכנעתי שלא קיימת דרך יותר טובה לעשות זה (לא הגיוני לי שיש מתודה שמקבלת 2 פרמטרים שלא משתמשים בהם)
 app.use((error, req, res, next) => {
+    // todo - להחליף את המספר 500 במתשנה קבוע עם שם הגיוני
     res.status(error.status || 500);
     res.json({
         error: {
@@ -26,10 +30,7 @@ app.use((error, req, res, next) => {
     });
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
+// this function is responsible for exporting the app on the specific port
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
