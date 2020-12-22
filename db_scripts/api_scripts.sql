@@ -11,7 +11,7 @@ INSERT INTO TEAMS (TeamName) VALUES ("kaki");
 INSERT INTO TEAM_PER_USER VALUES (1, 1);
 
 -- add product example (product_name, product_author, list_id)
-INSERT INTO PRODUCTS VALUES ("BAMBI", 1, 1);
+INSERT INTO PRODUCTS (ProductName, ProductAuthor, ListID) VALUES ("BAMBI", 1, 1);
 
 -- return 1 if the phone number exists, else return 0
 SELECT COUNT(1)
