@@ -24,4 +24,12 @@ exports.groups_by_userID = (req, response, next) => {
 };
 
 exports.create_group = (req, response, next) => {
+    const { name } = req.body
+  
+    pool.query("INSERT INTO TEAMS (TeamName) VALUES ($1)", [name], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.send(`Team added`)
+    })
 };

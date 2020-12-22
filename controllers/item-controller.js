@@ -25,6 +25,12 @@ exports.item_by_list = (req, response, next) => {
 };
 
 exports.item_create = (req, response, next) => {
-    console.log(req.params.phonenumber)
-
+    const { name, author, list } = req.body
+  
+    pool.query("INSERT INTO PRODUCTS (ProductName, ProductAuthor, ListID) VALUES  ($1, $2, $3)", [name, author, list], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.send(`Product added`)
+    })
 };

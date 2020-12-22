@@ -28,5 +28,12 @@ exports.user_phone_number = (req, response, next) => {
 };
 
 exports.user_create = (req, response, next) => {
-
+    const { name, phone } = req.body
+  
+    pool.query("INSERT INTO USERS (UserFullName, UserPhoneNumber) VALUES  ($1, $2)", [name, phone], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.send(`User added`)
+    })
 }
