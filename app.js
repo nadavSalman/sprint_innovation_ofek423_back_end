@@ -4,7 +4,6 @@ const app = express()
 const bodyParser = require("body-parser");
 
 // todo - הכנס הערה שמתארת את קבוצת הפרטמרים הללו
-const port = 3000
 const userRoutes = require('./routers/users-router');
 const groupRoutes = require('./routers/groups-router');
 const listRoutes = require('./routers/lists-router');
@@ -31,8 +30,6 @@ app.use((error, req, res, next) => {
 });
 
 // this function is responsible for exporting the app on the specific port
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
+app.listen(process.env.PORT || 3000)
 
 module.exports = app;
