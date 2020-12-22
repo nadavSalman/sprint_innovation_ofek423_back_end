@@ -1,11 +1,11 @@
 CREATE TABLE USERS (
-		UserID int PRIMARY KEY,
+		UserID SERIAL PRIMARY KEY,
 		UserFullName varchar(255),
 		UserPhoneNumber varchar(10)
 );
 
 CREATE TABLE TEAMS (
-		TeamID int PRIMARY KEY,
+		TeamID SERIAL PRIMARY KEY ,
 		TeamName varchar(255)
 );
 
@@ -15,7 +15,7 @@ CREATE TABLE TEAM_PER_USER (
 );
 
 CREATE TABLE LISTS (
-		ListID int PRIMARY KEY,
+		ListID SERIAL PRIMARY KEY,
 		TeamID int REFERENCES TEAMS(TeamID),
 		ListCreator int REFERENCES USERS(UserID),
 		ListPurchaseDate date,
@@ -23,7 +23,7 @@ CREATE TABLE LISTS (
 );
 
 CREATE TABLE PRODUCTS (
-		ProductID int PRIMARY KEY,
+		ProductID SERIAL PRIMARY KEY,
 		ProductName varchar(255),
 		ProductAuthor int REFERENCES USERS(UserID),
 		ListID int REFERENCES LISTS(ListID)
