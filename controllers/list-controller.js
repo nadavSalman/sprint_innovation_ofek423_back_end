@@ -27,7 +27,7 @@ exports.lists_by_groupID = (req, response, next) => {
 exports.create_list = (req, response, next) => {
     const { team, creator, date, location } = req.body
     try {
-        pool.query("INSERT INTO LISTS (TeamID, ListCreator, ListPurchaseDate, PurchaseLocation) VALUES ($1, $2, $3, $4)", [team, creator, date, location], (error, results) => {
+        pool.query("INSERT INTO LISTS (TeamID, ListCreator, ListPurchaseDate, PurchaseLocation) VALUES ($1, $2, $3, $4)", [parseInt(team), parseInt(creator), date, location], (error, results) => {
         if (error) {
             throw error
         }
