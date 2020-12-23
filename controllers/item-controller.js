@@ -26,11 +26,14 @@ exports.item_by_list = (req, response, next) => {
 
 exports.item_create = (req, response, next) => {
     const { name, author, list } = req.body
-  
-    pool.query("INSERT INTO PRODUCTS (ProductName, ProductAuthor, ListID) VALUES  ($1, $2, $3)", [name, author, list], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.send(`Product added`)
-    })
+    try {
+        pool.query("INSERT INTO PRODUCTS (ProductName, ProductAuthor, ListID) VALUES  ($1, $2, $3)", [name, parseInt(author), parseInt(list)], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.send(`Product added`)
+        })
+    } catch (e) {
+        response.send("error")
+    }
 };
