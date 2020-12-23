@@ -24,12 +24,32 @@ exports.groups_by_userID = (req, response, next) => {
 };
 
 exports.create_group = (req, response, next) => {
-    const { name } = req.body
+    const { name, team_members } = req.body
   
     pool.query("INSERT INTO TEAMS (TeamName) VALUES ($1)", [name], (error, results) => {
       if (error) {
         throw error
       }
-      response.send(`Team added`)
+    //   response.send(`Team added`)
+    })
+
+    pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
+        try {
+            team_id = res.rows[res.rows.length-1].teamid
+            console.log(team_id)
+            team_members.forEach(user_id => {
+                console.log(team_id)
+                pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
+                    if (error) {
+                    throw error
+                    }
+                    // response.send(`Team added`)
+                })
+            });
+
+        } catch (e) {
+            response.send("error")
+        }
+
     })
 };

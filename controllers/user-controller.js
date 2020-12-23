@@ -9,7 +9,6 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 })
 
-
 exports.user_phone_number = (req, response, next) => {
     pool.query("SELECT userfullname,UserID FROM public.USERS WHERE UserPhoneNumber='" + req.params.phonenumber + "'", (err, res) => {
 
@@ -27,13 +26,27 @@ exports.user_phone_number = (req, response, next) => {
     })
 };
 
+
+exports.all_users = (req, response, next) => {
+    pool.query("SELECT * FROM public.USERS", (err, res) => {
+        try {
+            var item = res.rows
+            response.send(item)
+
+        } catch (e) {
+            response.send("user does not exist")
+        }
+
+    })
+};
+
 exports.user_create = (req, response, next) => {
     const { name, phone } = req.body
-  
+
     pool.query("INSERT INTO USERS (UserFullName, UserPhoneNumber) VALUES  ($1, $2)", [name, phone], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.send(`User added`)
+        if (error) {
+            throw error
+        }
+        response.send(`User added`)
     })
-}
+};
