@@ -25,13 +25,17 @@ exports.groups_by_userID = (req, response, next) => {
 
 exports.create_group = (req, response, next) => {
     const { name, team_members } = req.body
-  
-    pool.query("INSERT INTO TEAMS (TeamName) VALUES ($1)", [name], (error, results) => {
-      if (error) {
-        throw error
-      }
-    //   response.send(`Team added`)
-    })
+    try {
+        pool.query("INSERT INTO TEAMS (TeamName) VALUES ($1)", [name], (error, results) => {
+        if (error) {
+            throw error
+        }
+        //   response.send(`Team added`)
+        })
+        
+    } catch (e) {
+        response.send("error")
+    }
 
     pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
         try {

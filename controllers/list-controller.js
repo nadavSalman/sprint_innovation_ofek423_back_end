@@ -26,11 +26,14 @@ exports.lists_by_groupID = (req, response, next) => {
 };
 exports.create_list = (req, response, next) => {
     const { team, creator, date, location } = req.body
-  
-    pool.query("INSERT INTO LISTS (TeamID, ListCreator, ListPurchaseDate, PurchaseLocation) VALUES ($1, $2, $3, $4)", [team, creator, date, location], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.send(`list added`)
-    })
+    try {
+        pool.query("INSERT INTO LISTS (TeamID, ListCreator, ListPurchaseDate, PurchaseLocation) VALUES ($1, $2, $3, $4)", [parseInt(team), parseInt(creator), date, location], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.send(`list added`)
+        })
+    } catch (e) {
+        response.send("error")
+    }
 };
