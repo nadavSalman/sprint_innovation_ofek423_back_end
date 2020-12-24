@@ -52,6 +52,7 @@ exports.create_group = (req, response, next) => {
                     throw 'parameter is not a number'
                 }
             });
+            response.send("team added")
 
         } catch (e) {
             response.send("error")
