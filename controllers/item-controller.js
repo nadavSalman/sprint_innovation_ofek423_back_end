@@ -26,14 +26,20 @@ exports.item_by_list = (req, response, next) => {
 
 exports.item_create = (req, response, next) => {
     const { name, author, list } = req.body
-    try {
-        pool.query("INSERT INTO PRODUCTS (ProductName, ProductAuthor, ListID) VALUES  ($1, $2, $3)", [name, parseInt(author), parseInt(list)], (error, results) => {
-        if (error) {
-            throw error
+
+    if (typeof author == 'number' && typeof list == 'number') {
+        try {
+            pool.query("INSERT INTO PRODUCTS (ProductName, ProductAuthor, ListID) VALUES  ($1, $2, $3)", [name, parseInt(author), parseInt(list)], (error, results) => {
+                if (error) {
+                    throw error
+                }
+                response.send(`Product added`)
+            })
+        } catch (e) {
+            response.send("error")
         }
-        response.send(`Product added`)
-        })
-    } catch (e) {
-        response.send("error")
+    }
+    else {
+        response.send("please send the right parameters")
     }
 };

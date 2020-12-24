@@ -19,7 +19,6 @@ exports.groups_by_userID = (req, response, next) => {
         } catch (e) {
             response.send("error")
         }
-
     })
 };
 
@@ -27,28 +26,31 @@ exports.create_group = (req, response, next) => {
     const { name, team_members } = req.body
     try {
         pool.query("INSERT INTO TEAMS (TeamName) VALUES ($1)", [name], (error, results) => {
-        if (error) {
-            throw error
-        }
-        //   response.send(`Team added`)
+            if (error) {
+                throw error
+            }
+            //   response.send(`Team added`)
         })
-        
+
     } catch (e) {
         response.send("error")
     }
 
     pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
         try {
-            team_id = res.rows[res.rows.length-1].teamid
-            console.log(team_id)
+            team_id = res.rows[res.rows.length - 1].teamid
             team_members.forEach(user_id => {
-                console.log(team_id)
-                pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
-                    if (error) {
-                    throw error
-                    }
-                    // response.send(`Team added`)
-                })
+                if (typeof user_id == 'number') {
+                    pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
+                        if (error) {
+                            throw error
+                        }
+                        // response.send(`Team added`)
+                    })
+                }
+                else {
+                    throw 'parameter is not a number'
+                }
             });
 
         } catch (e) {
