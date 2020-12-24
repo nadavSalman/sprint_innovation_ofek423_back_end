@@ -26,7 +26,7 @@ exports.lists_by_groupID = (req, response, next) => {
 };
 exports.create_list = (req, response, next) => {
     const { team, creator, date, location } = req.body
-    if (typeof team == 'number' && typeof creator == 'number') {
+    if (!isNaN(parseInt(team)) && !isNaN(parseInt(creator))) {
         try {
             pool.query("INSERT INTO LISTS (TeamID, ListCreator, ListPurchaseDate, PurchaseLocation) VALUES ($1, $2, $3, $4)", [parseInt(team), parseInt(creator), date, location], (error, results) => {
                 if (error) {
