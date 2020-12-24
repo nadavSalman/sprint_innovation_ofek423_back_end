@@ -23,6 +23,7 @@ exports.groups_by_userID = (req, response, next) => {
 };
 
 exports.create_group = (req, response, next) => {
+    console.log(req.body)
     const { name, team_members } = req.body
     try {
         pool.query("INSERT INTO TEAMS (TeamName) VALUES ($1)", [name], (error, results) => {
@@ -39,7 +40,8 @@ exports.create_group = (req, response, next) => {
     pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
         try {
             team_id = res.rows[res.rows.length - 1].teamid
-            team_members.forEach(user_id => {
+            var array = JSON.parse(team_members)
+            array.forEach(user_id => {
                 if (!isNaN(parseInt(user_id))) {
                     pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
                         if (error) {
