@@ -40,7 +40,7 @@ exports.create_group = (req, response, next) => {
         try {
             team_id = res.rows[res.rows.length - 1].teamid
             team_members.forEach(user_id => {
-                if (typeof user_id == 'number') {
+                if (!isNaN(parseInt(user_id))) {
                     pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
                         if (error) {
                             throw error
