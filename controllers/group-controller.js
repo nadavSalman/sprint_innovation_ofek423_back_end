@@ -25,7 +25,7 @@ exports.groups_by_userID = (req, response, next) => {
 
 exports.create_group = (req, response, next) => {
     console.log(req.body)
-    const { name, team_members } = JSON.parse(req.body);
+    const { name, team_members } = (req.body);
     console.log(name) 
     console.log(team_members)
     try {
