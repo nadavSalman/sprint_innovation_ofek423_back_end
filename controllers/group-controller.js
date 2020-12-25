@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const { Pool } = require('pg');
 
 
@@ -24,7 +25,9 @@ exports.groups_by_userID = (req, response, next) => {
 
 exports.create_group = (req, response, next) => {
     console.log(req.body)
-    const { name, team_members } = req.body
+    const { name, team_members } = JSON.parse(req.body);
+    console.log(name) 
+    console.log(team_members)
     try {
         pool.query("INSERT INTO TEAMS (TeamName) VALUES ($1)", [name], (error, results) => {
             if (error) {
@@ -40,8 +43,8 @@ exports.create_group = (req, response, next) => {
     pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
         try {
             team_id = res.rows[res.rows.length - 1].teamid
-            var array = JSON.parse(team_members)
-            array.forEach(user_id => {
+            team_members.forEach(user_id => {
+                console.log(user_id)
                 if (!isNaN(parseInt(user_id))) {
                     pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
                         if (error) {
