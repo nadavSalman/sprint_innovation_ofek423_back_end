@@ -42,6 +42,9 @@ exports.create_group = (req, response, next) => {
 
     pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
         try {
+            console.log(res)
+            console.log(res.rows)
+            console.log(res.rows[res.rows.length - 1])
             team_id = res.rows[res.rows.length - 1].teamid
             console.log(team_id);
             team_members.forEach(user_id => {
