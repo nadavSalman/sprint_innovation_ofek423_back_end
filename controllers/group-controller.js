@@ -34,38 +34,39 @@ exports.create_group = (req, response, next) => {
                 throw error
             }
             //   response.send(`Team added`)
+            pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
+                try {
+                    console.log(res)
+                    console.log(res.rows)
+                    console.log(res.rows[res.rows.length - 1])
+                    team_id = res.rows[res.rows.length - 1].teamid
+                    console.log(team_id);
+                    team_members.forEach(user_id => {
+                        console.log(user_id)
+                        if (!isNaN(parseInt(user_id))) {
+                            pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
+                                if (error) {
+                                    throw error
+                                }
+                                // response.send(`Team added`)
+                            })
+                        }
+                        else {
+                            throw 'parameter is not a number'
+                        }
+                    });
+                    response.send("team added")
+        
+                } catch (e) {
+                    response.send("error inserting team members")
+                }
+        
+            })
+
+
         })
 
     } catch (e) {
         response.send("error inserting to teams table")
     }
-
-    pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
-        try {
-            console.log(res)
-            console.log(res.rows)
-            console.log(res.rows[res.rows.length - 1])
-            team_id = res.rows[res.rows.length - 1].teamid
-            console.log(team_id);
-            team_members.forEach(user_id => {
-                console.log(user_id)
-                if (!isNaN(parseInt(user_id))) {
-                    pool.query("INSERT INTO TEAM_PER_USER VALUES ((SELECT UserID FROM USERS WHERE UserID = $1), (SELECT TeamID FROM TEAMS WHERE TeamID = $2))", [user_id, team_id], (error, results) => {
-                        if (error) {
-                            throw error
-                        }
-                        // response.send(`Team added`)
-                    })
-                }
-                else {
-                    throw 'parameter is not a number'
-                }
-            });
-            response.send("team added")
-
-        } catch (e) {
-            response.send("error inserting team members")
-        }
-
-    })
 };
