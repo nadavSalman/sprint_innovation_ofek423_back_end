@@ -37,12 +37,13 @@ exports.create_group = (req, response, next) => {
         })
 
     } catch (e) {
-        response.send("error")
+        response.send("error inserting to teams table")
     }
 
     pool.query("SELECT TeamID FROM TEAMS WHERE TeamName = $1;", [name], (err, res) => {
         try {
             team_id = res.rows[res.rows.length - 1].teamid
+            console.log(team_id);
             team_members.forEach(user_id => {
                 console.log(user_id)
                 if (!isNaN(parseInt(user_id))) {
@@ -60,7 +61,7 @@ exports.create_group = (req, response, next) => {
             response.send("team added")
 
         } catch (e) {
-            response.send("error")
+            response.send("error inserting team members")
         }
 
     })
