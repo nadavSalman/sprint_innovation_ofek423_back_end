@@ -27,10 +27,10 @@ exports.lists_by_groupID = (req, response, next) => {
 exports.create_list = (req, response, next) => {
     const { team, creator, date, location } = req.body
     console.log(date)
-    console.log(Date.parse(date))
+    console.log(date.toISOString())
     if (!isNaN(parseInt(team)) && !isNaN(parseInt(creator))) {
         try {
-            pool.query("INSERT INTO LISTS (TeamID, ListCreator, ListPurchaseDate, PurchaseLocation) VALUES ($1, $2, $3, $4)", [parseInt(team), parseInt(creator), Date.parse(date), location], (error, results) => {
+            pool.query("INSERT INTO LISTS (TeamID, ListCreator, ListPurchaseDate, PurchaseLocation) VALUES ($1, $2, $3, $4)", [parseInt(team), parseInt(creator),date.toISOString(), location], (error, results) => {
                 if (error) {
                     throw error
                 }
